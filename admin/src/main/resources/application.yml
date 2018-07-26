@@ -1,0 +1,91 @@
+server:
+  port: 8080
+
+guns:
+  swagger-open: true              #是否开启swagger
+  kaptcha-open: true             #是否开启登录时验证码
+  file-upload-path: d:/tmp       #文件上传目录
+  spring-session-open: false      #是否开启spring session,如果是多机环境需要开启
+  session-invalidate-time: 1800     #session失效时间(只在单机环境下生效，多机环境在SpringSessionConfig类中配置) 单位：秒
+  session-validation-interval: 900  #多久检测一次失效的session(单机环境生效) 单位：秒
+
+spring:
+  profiles:
+    active: @spring.active@
+  mvc:
+    static-path-pattern: /static/**
+    view:
+      prefix: /WEB-INF/view
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: admin/src/main/java,core/src/main/java
+      exclude: static/**,WEB-INF/view/**
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+  data:
+    elasticsearch:
+      cluster-name: es -cky
+      cluster-nodes: 127.0.0.1:9300
+
+mybatis-plus:
+  typeAliasesPackage: cn.seclover.zyf.system.model     #Mybatis指定包名称
+
+log:
+  path: guns-logs
+
+---
+
+spring:
+  profiles: local
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3307/softperfectnetworx?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+    db-name: guns #用来搜集数据库的所有表
+    filters: wall,mergeStat
+
+---
+
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3307/softperfectnetworx?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+    db-name: guns #用来搜集数据库的所有表
+    filters: wall,mergeStat
+
+#多数据源情况的配置
+guns:
+  muti-datasource:
+    open: true
+    url: jdbc:mysql://127.0.0.1:3306/test?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+    dataSourceNames:
+      - dataSourceGuns
+      - dataSourceBiz
+
+---
+
+spring:
+  profiles: test
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/softperfectnetworx?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+    filters: wall,mergeStat
+
+---
+
+spring:
+  profiles: produce
+  datasource:
+      url: jdbc:mysql://127.0.0.1:3306/softperfectnetworx?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=UTC
+      username: root
+      password: root
+      filters: wall,mergeStat
+

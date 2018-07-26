@@ -1,0 +1,6 @@
+# AutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+cn.seclover.zyf.base.controller.GlobalController,\
+cn.seclover.zyf.config.DefaultFastjsonConfig,\
+cn.seclover.zyf.config.DefaultProperties,\
+cn.seclover.zyf.config.DefaultWebConfig
